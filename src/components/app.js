@@ -1,18 +1,19 @@
-import { useState } from "react";
+const messages = [
+  { "id": 1, "sender": "left", "message": "a" },
+  { "id": 2, "sender": "right", "message": "b" },
+  { "id": 3, "sender": "left", "message": "b" }
+];
 
-export default function App() {
-  const [count, setCount] = useState(0);
-  return (
-    <div>
-      This is a sample stateful React application
-      with static HTML.
-      <br />
-      <br />
-      Here is a button that will track
-      how many times you click it:
-      <br />
-      <br />
-      <button onClick={() => setCount(count + 1)}>{count}</button>
-    </div>
-  );
-}
+const Message = (props) => (
+  <div className={props.position === "left" ? "message message-left" : "message message-right"}>
+    {props.text}
+  </div>
+)
+
+const App = () => (
+  <>
+    {messages.map((m) => (<Message key={m.id} position={m.sender} text={m.message} />))}
+  </>
+)
+
+export { App }
