@@ -1,26 +1,38 @@
 import { useRef, useState, useCallback } from "react";
 
-const Message = (props) => (
-  <div className={props.sender === "left" ? "message message-left" : "message message-right"}>
-    {props.text}
-  </div>
-)
+const Message = (props) => {
+  console.log("###Message refreshing")
+
+  return (
+    < div className={props.sender === "left" ? "message message-left" : "message message-right"} >
+      {props.text}
+    </div >
+  )
+}
 
 const MessageList = (props) => {
+  console.log("###MessageList refreshing")
+
   const messages = props.messages;
 
   return (messages.map((m) => (<Message key={m.id} sender={m.sender} text={m.message} />)))
 }
 
 const MessageInputRef = (props) => {
+  console.log("###MessageInputRef refreshing")
+
+  const appendMessage = props.appendMessage;
+  const sender = props.sender;
+
   const messageElement = useRef();
 
   const formHandler = useCallback(
     (event) => {
       event.preventDefault();
       console.log("Submit:", messageElement.current?.value)
-      props.appendMessage({ "sender": props.sender, "text": messageElement.current?.value })
-    })
+      appendMessage({ "sender": sender, "text": messageElement.current?.value })
+    }, [appendMessage, sender])
+
   return (
     <form onSubmit={formHandler}>
       <input ref={messageElement} type="text" />
@@ -30,11 +42,14 @@ const MessageInputRef = (props) => {
 }
 
 const App = () => {
+  console.log("###App refreshing")
+
   const [messages, setMessages] = useState([
     { "id": 1, "sender": "left", "message": "a" },
     { "id": 2, "sender": "right", "message": "b" },
     { "id": 3, "sender": "left", "message": "c yu ii" }
   ]);
+
   const appendMessage = (message) => {
     const l = messages.length;
     const newMessages = [...messages, { "id": l + 1, "sender": message.sender, "message": message.text }]
