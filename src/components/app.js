@@ -5,14 +5,14 @@ const messages = [
 ];
 
 const Message = (props) => (
-  <div className={props.position === "left" ? "message message-left" : "message message-right"}>
+  <div className={props.sender === "left" ? "message message-left" : "message message-right"}>
     {props.text}
   </div>
 )
 
 const App = () => (
   <>
-    {messages.map((m) => (<Message key={m.id} position={m.sender} text={m.message} />))}
+    {messages.map((m) => (<Message key={m.id} sender={m.sender} text={m.message} />))}
   </>
 )
 
