@@ -23,7 +23,6 @@ const MessageInputState = (props) => {
   console.log("###MessageInputState refreshing")
 
   const appendMessage = props.appendMessage;
-  const sender = props.sender;
 
   const [message, setMessage] = useState("")
 
@@ -31,9 +30,9 @@ const MessageInputState = (props) => {
     (event) => {
       event.preventDefault();
       console.log("SubmitState:", message)
-      appendMessage({ "sender": sender, "text": message })
+      appendMessage({ "text": message })
       setMessage("")
-    }, [appendMessage, message, sender]
+    }, [appendMessage, message]
   )
   return (
     <form onSubmit={formHandler}>
@@ -47,7 +46,6 @@ const MessageInputRef = (props) => {
   console.log("###MessageInputRef refreshing")
 
   const appendMessage = props.appendMessage;
-  const sender = props.sender;
 
   const messageElement = useRef();
 
@@ -55,9 +53,9 @@ const MessageInputRef = (props) => {
     (event) => {
       event.preventDefault();
       console.log("SubmitRef:", messageElement.current?.value)
-      appendMessage({ "sender": sender, "text": messageElement.current?.value })
+      appendMessage({ "text": messageElement.current?.value })
       messageElement.current.value = ""
-    }, [appendMessage, sender])
+    }, [appendMessage])
 
   return (
     <form onSubmit={formHandler}>
@@ -65,6 +63,16 @@ const MessageInputRef = (props) => {
       <button type="submit">Send</button>
     </form>
   )
+}
+
+const detectIntent = async (message) => {
+  try {
+    const response = await axios
+      .post('http://localhost:4242/detectIntent', message);
+    return response
+  } catch (error) {
+    console.log(error)
+  }
 }
 
 const App = () => {
@@ -85,10 +93,17 @@ const App = () => {
   }, [message])
 
   const appendMessage = (message) => {
-    const l = messages.length;
-    setMessages(messages => {
-      return [...messages, { "id": l + 1, "sender": message.sender, "message": message.text }]
-    })
+    detectIntent(message)
+      .then((response) => {
+        console.log(JSON.stringify(response))
+        const l = messages.length;
+        setMessages(messages => {
+          return [...messages, { "id": l + 1, "sender": "left", "message": message.text }]
+        });
+        setMessages(messages => {
+          return [...messages, { "id": l + 2, "sender": "right", "message": response.data.fullfilment }]
+        });
+      })
   }
 
   return (
@@ -97,8 +112,8 @@ const App = () => {
       <div>
         <MessageList messages={messages} />
       </div>
-      <div><MessageInputRef sender="left" appendMessage={appendMessage} /></div>
-      <div><MessageInputState sender="right" appendMessage={appendMessage} /></div>
+      <div><MessageInputRef appendMessage={appendMessage} /></div>
+      <div><MessageInputState appendMessage={appendMessage} /></div>
     </>
   )
 }
