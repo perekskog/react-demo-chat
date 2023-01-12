@@ -77,9 +77,9 @@ const App = () => {
 
   const appendMessage = (message) => {
     const l = messages.length;
-    const newMessages = [...messages, { "id": l + 1, "sender": message.sender, "message": message.text }]
-    console.log(newMessages);
-    setMessages(newMessages);
+    setMessages(messages => {
+      return [...messages, { "id": l + 1, "sender": message.sender, "message": message.text }]
+    })
   }
   return (
     <>
