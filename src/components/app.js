@@ -1,4 +1,5 @@
-import { useRef, useState, useCallback } from "react";
+import { useRef, useState, useCallback, useEffect } from "react";
+import axios from "axios"
 
 const Message = (props) => {
   console.log("###Message refreshing")
@@ -71,6 +72,21 @@ const App = () => {
 
   const [messages, setMessages] = useState([
   ]);
+  const [message, setMessage] = useState();
+
+  useEffect(() => {
+    const getMessage = () => {
+      return axios
+        .get('http://localhost:4242/message')
+        .then(res => {
+          setMessage(() => res.data.messageOfTheDay);
+        })
+    }
+
+    getMessage();
+  }, [message])
+
+
 
   const appendMessage = (message) => {
     const l = messages.length;
@@ -80,6 +96,7 @@ const App = () => {
   }
   return (
     <>
+      <div>Message of the day: {message}</div>
       <div>
         <MessageList messages={messages} />
       </div>
