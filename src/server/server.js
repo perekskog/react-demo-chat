@@ -9,6 +9,10 @@ server.get("/", (req, res) => {
   res.sendFile(path.resolve(__dirname, 'index.html'))
 });
 
+server.get("/app.css", (req, res) => {
+  res.sendFile(path.resolve(__dirname, 'app.css'))
+});
+
 server.get("/message", (req, res) => {
   console.log("/message")
   res.setHeader('Content-Type', 'application/json');
