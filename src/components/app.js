@@ -18,6 +18,29 @@ const MessageList = (props) => {
   return (messages.map((m) => (<Message key={m.id} sender={m.sender} text={m.message} />)))
 }
 
+const MessageInputState = (props) => {
+  console.log("###MessageInputState refreshing")
+
+  const appendMessage = props.appendMessage;
+  const sender = props.sender;
+
+  const [message, setMessage] = useState("")
+
+  const formHandler = useCallback(
+    (event) => {
+      event.preventDefault();
+      console.log("SubmitState:", message)
+      appendMessage({ "sender": sender, "text": message })
+    }, [appendMessage, message, sender]
+  )
+  return (
+    <form onSubmit={formHandler}>
+      <input value={message} type="text" onChange={e => setMessage(e.target.value)} />
+      <button type="submit">Send</button>
+    </form>
+  )
+}
+
 const MessageInputRef = (props) => {
   console.log("###MessageInputRef refreshing")
 
@@ -29,7 +52,7 @@ const MessageInputRef = (props) => {
   const formHandler = useCallback(
     (event) => {
       event.preventDefault();
-      console.log("Submit:", messageElement.current?.value)
+      console.log("SubmitRef:", messageElement.current?.value)
       appendMessage({ "sender": sender, "text": messageElement.current?.value })
     }, [appendMessage, sender])
 
@@ -62,7 +85,7 @@ const App = () => {
         <MessageList messages={messages} />
       </div>
       <div><MessageInputRef sender="left" appendMessage={appendMessage} /></div>
-      <div><MessageInputRef sender="right" appendMessage={appendMessage} /></div>
+      <div><MessageInputState sender="right" appendMessage={appendMessage} /></div>
     </>
   )
 }
