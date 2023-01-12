@@ -31,6 +31,7 @@ const MessageInputState = (props) => {
       event.preventDefault();
       console.log("SubmitState:", message)
       appendMessage({ "sender": sender, "text": message })
+      setMessage("")
     }, [appendMessage, message, sender]
   )
   return (
@@ -54,6 +55,7 @@ const MessageInputRef = (props) => {
       event.preventDefault();
       console.log("SubmitRef:", messageElement.current?.value)
       appendMessage({ "sender": sender, "text": messageElement.current?.value })
+      messageElement.current.value = ""
     }, [appendMessage, sender])
 
   return (
