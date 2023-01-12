@@ -70,9 +70,6 @@ const App = () => {
   console.log("###App refreshing")
 
   const [messages, setMessages] = useState([
-    { "id": 1, "sender": "left", "message": "a" },
-    { "id": 2, "sender": "right", "message": "b" },
-    { "id": 3, "sender": "left", "message": "c yu ii" }
   ]);
 
   const appendMessage = (message) => {
