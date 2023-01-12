@@ -75,18 +75,14 @@ const App = () => {
   const [message, setMessage] = useState();
 
   useEffect(() => {
-    const getMessage = () => {
-      return axios
-        .get('http://localhost:4242/message')
-        .then(res => {
-          setMessage(() => res.data.messageOfTheDay);
-        })
+    const getMessage = async () => {
+      const res = await axios
+        .get('http://localhost:4242/message');
+      setMessage(() => res.data.messageOfTheDay);
     }
 
     getMessage();
   }, [message])
-
-
 
   const appendMessage = (message) => {
     const l = messages.length;
@@ -94,6 +90,7 @@ const App = () => {
       return [...messages, { "id": l + 1, "sender": message.sender, "message": message.text }]
     })
   }
+
   return (
     <>
       <div>Message of the day: {message}</div>
