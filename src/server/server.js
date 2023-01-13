@@ -17,7 +17,7 @@ server.get("/message", (req, res) => {
   console.log("/message")
   res.setHeader('Content-Type', 'application/json');
   res.end(JSON.stringify({
-    messageOfTheDay: "Today!"
+    messageOfTheDay: "TBD..."
   }))
 })
 
@@ -27,7 +27,7 @@ server.post("/detectIntent", (req, res) => {
   console.log(`/detectIntent ${messageText}`)
   res.setHeader('Content-Type', 'application/json');
   res.end(JSON.stringify({
-    fullfilment: `Dialogflow fullfilment of "${messageText}"`
+    fullfilment: `TBD: Dialogflow fullfilment of "${messageText}"`
   }))
 })
 
