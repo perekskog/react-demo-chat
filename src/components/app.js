@@ -5,7 +5,7 @@ const Message = (props) => {
   console.log("###Message refreshing")
 
   return (
-    < div className={props.sender === "left" ? "message message-left" : "message message-right"} >
+    <div className={props.sender === "left" ? "message message-left" : "message message-right"} >
       {props.text}
     </div >
   )
@@ -16,7 +16,11 @@ const MessageList = (props) => {
 
   const messages = props.messages;
 
-  return (messages.map((m) => (<Message key={m.id} sender={m.sender} text={m.message} />)))
+  return (
+    <div className="message-list">
+      {messages.map((m) => (<Message key={m.id} sender={m.sender} text={m.message} />))}
+    </div>
+  )
 }
 
 const MessageInputState = (props) => {
@@ -36,8 +40,10 @@ const MessageInputState = (props) => {
   )
   return (
     <form onSubmit={formHandler}>
-      <input value={message} type="text" onChange={e => setMessage(e.target.value)} />
-      <button type="submit">Send</button>
+      <div className="input-group">
+        <input className="form-control" value={message} type="text" onChange={e => setMessage(e.target.value)} />
+        <button className="btn btn-primary" type="submit">Send</button>
+      </div>
     </form>
   )
 }
@@ -59,8 +65,10 @@ const MessageInputRef = (props) => {
 
   return (
     <form onSubmit={formHandler}>
-      <input ref={messageElement} type="text" />
-      <button type="submit">Send</button>
+      <div className="input-group">
+        <input className="form-control" ref={messageElement} type="text" />
+        <button className="btn btn-primary" type="submit">Send</button>
+      </div>
     </form>
   )
 }
@@ -107,14 +115,19 @@ const App = () => {
   }
 
   return (
-    <>
-      <div>Message of the day: {message}</div>
+    <div className="app">
+      <div className="card motd">
+        <div className="card-body">
+          <h5 className="card-title" style={{ textAlign: "center" }}>Message of the day</h5>
+          <p className="card-text" style={{ textAlign: "center" }}>{message}</p>
+        </div>
+      </div>
       <div>
         <MessageList messages={messages} />
       </div>
       <div><MessageInputRef appendMessage={appendMessage} /></div>
       <div><MessageInputState appendMessage={appendMessage} /></div>
-    </>
+    </div>
   )
 }
 
