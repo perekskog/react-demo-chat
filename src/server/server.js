@@ -31,4 +31,4 @@ server.post("/detectIntent", (req, res) => {
   }))
 })
 
-server.listen(4242, () => console.log("Server is running..."));
+server.listen(10000, "localhost", () => console.log("Server is running..."));

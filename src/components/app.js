@@ -76,7 +76,7 @@ const MessageInputRef = (props) => {
 const detectIntent = async (message) => {
   try {
     const response = await axios
-      .post('http://localhost:4242/detectIntent', message);
+      .post('http://localhost:10000/detectIntent', message);
     return response
   } catch (error) {
     console.log(error)
@@ -93,7 +93,7 @@ const App = () => {
   useEffect(() => {
     const getMessage = async () => {
       const res = await axios
-        .get('http://localhost:4242/message');
+        .get('http://localhost:10000/message');
       setMessage(() => res.data.messageOfTheDay);
     }
 
