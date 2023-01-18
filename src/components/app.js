@@ -1,55 +1,71 @@
 import { useRef, useState, useCallback, useEffect } from "react";
-import axios from "axios"
+import axios from "axios";
 
 const Message = (props) => {
-  console.log("###Message refreshing")
+  console.log("###Message refreshing");
 
   return (
-    <div className={props.sender === "left" ? "message message-left" : "message message-right"} >
+    <div
+      className={
+        props.sender === "left"
+          ? "message message-left"
+          : "message message-right"
+      }
+    >
       {props.text}
-    </div >
-  )
-}
+    </div>
+  );
+};
 
 const MessageList = (props) => {
-  console.log("###MessageList refreshing")
+  console.log("###MessageList refreshing");
 
   const messages = props.messages;
 
   return (
     <div className="message-list">
-      {messages.map((m) => (<Message key={m.id} sender={m.sender} text={m.message} />))}
+      {messages.map((m) => (
+        <Message key={m.id} sender={m.sender} text={m.message} />
+      ))}
     </div>
-  )
-}
+  );
+};
 
 const MessageInputState = (props) => {
-  console.log("###MessageInputState refreshing")
+  console.log("###MessageInputState refreshing");
 
   const appendMessage = props.appendMessage;
 
-  const [message, setMessage] = useState("")
+  const [message, setMessage] = useState("");
 
   const formHandler = useCallback(
     (event) => {
       event.preventDefault();
-      console.log("SubmitState:", message)
-      appendMessage({ "text": message })
-      setMessage("")
-    }, [appendMessage, message]
-  )
+      console.log("SubmitState:", message);
+      appendMessage({ text: message });
+      setMessage("");
+    },
+    [appendMessage, message]
+  );
   return (
     <form onSubmit={formHandler}>
       <div className="input-group">
-        <input className="form-control" value={message} type="text" onChange={e => setMessage(e.target.value)} />
-        <button className="btn btn-primary" type="submit">Send</button>
+        <input
+          className="form-control"
+          value={message}
+          type="text"
+          onChange={(e) => setMessage(e.target.value)}
+        />
+        <button className="btn btn-primary" type="submit">
+          Send
+        </button>
       </div>
     </form>
-  )
-}
+  );
+};
 
 const MessageInputRef = (props) => {
-  console.log("###MessageInputRef refreshing")
+  console.log("###MessageInputRef refreshing");
 
   const appendMessage = props.appendMessage;
 
@@ -58,77 +74,94 @@ const MessageInputRef = (props) => {
   const formHandler = useCallback(
     (event) => {
       event.preventDefault();
-      console.log("SubmitRef:", messageElement.current?.value)
-      appendMessage({ "text": messageElement.current?.value })
-      messageElement.current.value = ""
-    }, [appendMessage])
+      console.log("SubmitRef:", messageElement.current?.value);
+      appendMessage({ text: messageElement.current?.value });
+      messageElement.current.value = "";
+    },
+    [appendMessage]
+  );
 
   return (
     <form onSubmit={formHandler}>
       <div className="input-group">
         <input className="form-control" ref={messageElement} type="text" />
-        <button className="btn btn-primary" type="submit">Send</button>
+        <button className="btn btn-primary" type="submit">
+          Send
+        </button>
       </div>
     </form>
-  )
-}
+  );
+};
 
 const detectIntent = async (message) => {
   try {
-    const response = await axios
-      .post('http://localhost:10000/detectIntent', message);
-    return response
+    const response = await axios.post(
+      "http://localhost:10000/detectIntent",
+      message
+    );
+    return response;
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
-}
+};
 
 const App = () => {
-  console.log("###App refreshing")
+  console.log("###App refreshing");
 
-  const [messages, setMessages] = useState([
-  ]);
+  const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState();
 
   useEffect(() => {
     const getMessage = async () => {
-      const res = await axios
-        .get('http://localhost:10000/message');
+      const res = await axios.get("http://localhost:10000/message");
       setMessage(() => res.data.messageOfTheDay);
-    }
+    };
 
     getMessage();
-  }, [message])
+  }, [message]);
 
   const appendMessage = (message) => {
-    detectIntent(message)
-      .then((response) => {
-        console.log(JSON.stringify(response))
-        const l = messages.length;
-        setMessages(messages => {
-          return [...messages, { "id": l + 1, "sender": "left", "message": message.text }]
-        });
-        setMessages(messages => {
-          return [...messages, { "id": l + 2, "sender": "right", "message": response.data.fullfilment }]
-        });
-      })
-  }
+    detectIntent(message).then((response) => {
+      console.log(JSON.stringify(response));
+      const l = messages.length;
+      setMessages((messages) => {
+        return [
+          ...messages,
+          { id: l + 1, sender: "left", message: message.text },
+        ];
+      });
+      setMessages((messages) => {
+        return [
+          ...messages,
+          { id: l + 2, sender: "right", message: response.data.fullfilment },
+        ];
+      });
+    });
+  };
 
   return (
     <div className="app">
       <div className="card motd">
         <div className="card-body">
-          <h5 className="card-title" style={{ textAlign: "center" }}>Message of the day</h5>
-          <p className="card-text" style={{ textAlign: "center" }}>{message}</p>
+          <h5 className="card-title" style={{ textAlign: "center" }}>
+            Message of the day
+          </h5>
+          <p className="card-text" style={{ textAlign: "center" }}>
+            {message}
+          </p>
         </div>
       </div>
       <div>
         <MessageList messages={messages} />
       </div>
-      <div><MessageInputRef appendMessage={appendMessage} /></div>
-      <div><MessageInputState appendMessage={appendMessage} /></div>
+      <div>
+        <MessageInputRef appendMessage={appendMessage} />
+      </div>
+      <div>
+        <MessageInputState appendMessage={appendMessage} />
+      </div>
     </div>
-  )
-}
+  );
+};
 
-export { App }
+export { App };
