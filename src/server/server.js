@@ -1,9 +1,12 @@
 import express from "express";
 import path from "path";
+import { fileURLToPath } from "url";
 
 const server = express();
 server.use(express.static("dist"));
 server.use(express.json());
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 server.get("/", (req, res) => {
   res.sendFile(path.resolve(__dirname, "index.html"));
@@ -35,4 +38,6 @@ server.post("/detectIntent", (req, res) => {
   );
 });
 
-server.listen(10000, "localhost", () => console.log("Server is running..."));
+server.listen(8080, () =>
+  console.log("react-demo-chat listening on port 8080@230123 17:32")
+);
