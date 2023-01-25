@@ -2,20 +2,26 @@ import express from "express";
 import path from "path";
 import { fileURLToPath } from "url";
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const __approot = path.dirname(fileURLToPath(import.meta.url + "/../.."));
+console.log(__approot);
 
 const server = express();
 //server.use(express.static("dist"));
-server.use(express.static(__dirname + "/dist/"));
+server.use(express.static(__approot + "/dist/"));
 server.use(express.json());
 //server.defaultResponseHeaders.remove("X-CONTENT-TYPE-OPTIONS", "nosniff");
 
+server.use((req, res, next) => {
+  console.log(`${req.method} ${req.originalUrl}`);
+  next();
+});
+
 server.get("/", (req, res) => {
-  res.sendFile(path.resolve(__dirname, "index.html"));
+  res.sendFile(path.resolve(__approot, "src/server/index.html"));
 });
 
 server.get("/app.css", (req, res) => {
-  res.sendFile(path.resolve(__dirname, "app.css"));
+  res.sendFile(path.resolve(__approot, "src/server/app.css"));
 });
 
 server.get("/message", (req, res) => {
