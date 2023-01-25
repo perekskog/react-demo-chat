@@ -6,11 +6,8 @@ const __approot = path.dirname(fileURLToPath(import.meta.url + "/../.."));
 console.log(__approot);
 
 const server = express();
-//server.use(express.static("dist"));
 server.use(express.static(__approot + "/dist/"));
 server.use(express.json());
-//server.defaultResponseHeaders.remove("X-CONTENT-TYPE-OPTIONS", "nosniff");
-
 server.use((req, res, next) => {
   console.log(`${req.method} ${req.originalUrl}`);
   next();
