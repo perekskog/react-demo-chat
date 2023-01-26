@@ -30,6 +30,8 @@ steps:
         "europe-north1-docker.pkg.dev/playground-341718/react-demo-chat/app1",
         "--region",
         "europe-north1",
+        "--port",
+        "8080",
       ]
 images:
   - europe-north1-docker.pkg.dev/playground-341718/react-demo-chat/app1
