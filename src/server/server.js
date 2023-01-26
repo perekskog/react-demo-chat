@@ -44,5 +44,5 @@ server.post("/detectIntent", (req, res) => {
 });
 
 server.listen(8080, () =>
-  console.log("react-demo-chat listening on port 8080@230126 11:12")
+  console.log("react-demo-chat listening on port 8080@230126 11:16")
 );
