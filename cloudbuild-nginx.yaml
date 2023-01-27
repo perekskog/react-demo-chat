@@ -33,7 +33,7 @@ steps:
         "--region",
         "europe-north1",
         "--port",
-        "8080",
+        "80",
       ]
 images:
   - europe-north1-docker.pkg.dev/playground-341718/react-demo-chat/nginx
