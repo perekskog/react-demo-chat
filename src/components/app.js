@@ -1,8 +1,14 @@
 import { useRef, useState, useCallback, useEffect } from "react";
 import axios from "axios";
 
-const serverUri = "https://react-demo-chat-app1-hzfavhlsoq-lz.a.run.app";
-//const serverUri = "http://localhost:8080";
+// Read query parameter chatserver and store in serverUri
+
+// Get the query string from the URL
+const queryString = window.location.search;
+
+// Parse the query string to get the value of chatserver
+const urlParams = new URLSearchParams(queryString);
+const serverUri = urlParams.get("chatserver");
 
 const Message = (props) => {
   console.log("###Message refreshing");
@@ -98,6 +104,7 @@ const MessageInputRef = (props) => {
 
 const detectIntent = async (message) => {
   try {
+    console.log(serverUri);
     const response = await axios.post(serverUri + "/detectIntent", message);
     return response;
   } catch (error) {
@@ -113,6 +120,7 @@ const App = () => {
 
   useEffect(() => {
     const getMessage = async () => {
+      console.log(serverUri);
       const res = await axios.get(serverUri + "/message");
       setMessage(() => res.data.messageOfTheDay);
     };

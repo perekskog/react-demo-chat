@@ -13,14 +13,6 @@ server.use((req, res, next) => {
   next();
 });
 
-server.get("/", (req, res) => {
-  res.sendFile(path.resolve(__approot, "src/server/index.html"));
-});
-
-server.get("/app.css", (req, res) => {
-  res.sendFile(path.resolve(__approot, "src/server/app.css"));
-});
-
 server.get("/message", (req, res) => {
   console.log("/message");
   res.setHeader("Content-Type", "application/json");
@@ -44,5 +36,5 @@ server.post("/detectIntent", (req, res) => {
 });
 
 server.listen(8080, () =>
-  console.log("react-demo-chat listening on port 8080@230126 11:16")
+  console.log("react-demo-chat listening on port 8080@230127 13:16")
 );
