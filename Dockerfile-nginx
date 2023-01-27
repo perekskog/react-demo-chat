@@ -1,0 +1,13 @@
+FROM node:16 AS prod
+WORKDIR /usr/src/app
+COPY package*.json ./
+RUN npm install
+COPY . .
+RUN npm run dev:build
+
+FROM nginx:alpine
+WORKDIR /usr/share/nginx/html
+COPY --from=prod /usr/src/app/dist .
+
+EXPOSE 8080
+ENTRYPOINT ["nginx", "-g", "daemon off;"]
