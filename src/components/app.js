@@ -1,6 +1,9 @@
 import { useRef, useState, useCallback, useEffect } from "react";
 import axios from "axios";
 
+const serverUri = "https://react-demo-chat-app1-hzfavhlsoq-lz.a.run.app";
+//const serverUri = "http://localhost:8080";
+
 const Message = (props) => {
   console.log("###Message refreshing");
 
@@ -95,10 +98,7 @@ const MessageInputRef = (props) => {
 
 const detectIntent = async (message) => {
   try {
-    const response = await axios.post(
-      "http://localhost:10000/detectIntent",
-      message
-    );
+    const response = await axios.post(serverUri + "/detectIntent", message);
     return response;
   } catch (error) {
     console.log(error);
@@ -113,7 +113,7 @@ const App = () => {
 
   useEffect(() => {
     const getMessage = async () => {
-      const res = await axios.get("http://localhost:10000/message");
+      const res = await axios.get(serverUri + "/message");
       setMessage(() => res.data.messageOfTheDay);
     };
 
