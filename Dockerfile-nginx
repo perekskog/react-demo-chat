@@ -9,5 +9,5 @@ FROM nginx:alpine
 WORKDIR /usr/share/nginx/html
 COPY --from=prod /usr/src/app/dist .
 
-EXPOSE 8080
+EXPOSE 80
 ENTRYPOINT ["nginx", "-g", "daemon off;"]
