@@ -1,4 +1,4 @@
-FROM node:16 AS prod
+FROM node:16 AS react-app
 WORKDIR /usr/src/app
 COPY package*.json ./
 RUN npm install
@@ -7,7 +7,7 @@ RUN npm run dev:build
 
 FROM nginx:alpine
 WORKDIR /usr/share/nginx/html
-COPY --from=prod /usr/src/app/dist .
+COPY --from=react-app /usr/src/app/dist .
 
 EXPOSE 80
 ENTRYPOINT ["nginx", "-g", "daemon off;"]
