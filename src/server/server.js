@@ -1,5 +1,6 @@
 import express from "express";
 import path from "path";
+import cors from "cors";
 import { fileURLToPath } from "url";
 
 const __approot = path.dirname(fileURLToPath(import.meta.url + "/../.."));
@@ -12,6 +13,7 @@ server.use((req, res, next) => {
   console.log(`${req.method} ${req.originalUrl}`);
   next();
 });
+server.use(cors());
 
 server.get("/message", (req, res) => {
   console.log("/message");
