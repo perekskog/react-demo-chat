@@ -10,17 +10,14 @@ steps:
       [
         "build",
         "-t",
-        "europe-north1-docker.pkg.dev/playground-341718/react-demo-chat/be",
+        "europe-north1-docker.pkg.dev/$PROJECT_ID/react-demo-chat/be",
         "-f",
         "Dockerfile-be",
         ".",
       ]
   - name: "gcr.io/cloud-builders/docker"
     args:
-      [
-        "push",
-        "europe-north1-docker.pkg.dev/playground-341718/react-demo-chat/be",
-      ]
+      ["push", "europe-north1-docker.pkg.dev/$PROJECT_ID/react-demo-chat/be"]
   - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
     entrypoint: gcloud
     args:
@@ -29,11 +26,11 @@ steps:
         "deploy",
         "react-demo-chat-be",
         "--image",
-        "europe-north1-docker.pkg.dev/playground-341718/react-demo-chat/be",
+        "europe-north1-docker.pkg.dev/$PROJECT_ID/react-demo-chat/be",
         "--region",
         "europe-north1",
         "--port",
         "8080",
       ]
 images:
-  - europe-north1-docker.pkg.dev/playground-341718/react-demo-chat/be
+  - europe-north1-docker.pkg.dev/$PROJECT_ID/react-demo-chat/be
